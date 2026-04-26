@@ -1,0 +1,742 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emeline & Valentin — 21.12.26</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Raleway:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --prune: #5C3A6B;
+      --prune-light: #7B5494;
+      --prune-dark: #3D2249;
+      --prune-pale: #EDE5F2;
+      --ivory: #FAF7F2;
+      --ivory-dark: #F0EAE0;
+      --silver: #C8C8D4;
+      --silver-light: #E8E8F0;
+      --gold: #C9A96E;
+      --gold-light: #E8D5B0;
+      --text-dark: #2A1A35;
+      --text-mid: #5A4A65;
+      --text-light: #8A7A95;
+      --white: #FFFFFF;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { font-family: 'Raleway', sans-serif; background: var(--ivory); color: var(--text-dark); overflow-x: hidden; }
+
+    /* SNOWFLAKES */
+    .snow-container { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; overflow: hidden; }
+    .snowflake { position: absolute; top: -20px; color: var(--silver); font-size: 1em; opacity: 0; animation: snowfall linear infinite; }
+    @keyframes snowfall { 0% { transform: translateY(0) rotate(0deg); opacity: 0.8; } 100% { transform: translateY(110vh) rotate(360deg); opacity: 0; } }
+
+    /* LANG BAR */
+    .lang-bar { position: fixed; top: 0; right: 0; left: 0; z-index: 100; display: flex; justify-content: flex-end; align-items: center; padding: 12px 28px; background: rgba(250,247,242,0.92); backdrop-filter: blur(8px); border-bottom: 1px solid var(--silver-light); }
+    .lang-btn { font-family: 'Raleway', sans-serif; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; padding: 6px 16px; border-radius: 20px; border: 1.5px solid var(--prune); background: transparent; color: var(--prune); cursor: pointer; transition: all 0.3s ease; }
+    .lang-btn:hover, .lang-btn.active { background: var(--prune); color: var(--white); }
+    .lang-btn + .lang-btn { margin-left: 8px; }
+
+    /* NAV */
+    nav { position: fixed; top: 46px; left: 0; right: 0; z-index: 99; display: flex; justify-content: center; background: rgba(250,247,242,0.95); backdrop-filter: blur(10px); border-bottom: 1px solid var(--silver-light); padding: 0 20px; overflow-x: auto; }
+    nav a { font-family: 'Raleway', sans-serif; font-size: 0.7rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-mid); text-decoration: none; padding: 14px 14px; white-space: nowrap; transition: color 0.3s; border-bottom: 2px solid transparent; }
+    nav a:hover { color: var(--prune); border-bottom-color: var(--prune); }
+
+    /* HERO */
+    .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 120px 20px 60px; position: relative; background-image: url('Photocouv.jpg'); background-size: cover; background-position: center top; background-repeat: no-repeat; }
+    .hero::after { content: ''; position: absolute; inset: 0; background: linear-gradient(180deg, rgba(30,10,40,0.35) 0%, rgba(30,10,40,0.50) 50%, rgba(30,10,40,0.65) 100%); z-index: 0; }
+    .hero > * { position: relative; z-index: 1; }
+    .hero-snowflakes { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+    .hero-ornament { font-size: 2.2rem; color: rgba(255,255,255,0.6); margin-bottom: 24px; letter-spacing: 0.3em; animation: fadeDown 1s ease both; }
+    .hero h1 { font-family: 'Cormorant Garamond', serif; font-size: clamp(3rem,9vw,7rem); font-weight: 300; line-height: 1; color: var(--white); letter-spacing: -0.01em; animation: fadeDown 1.1s ease 0.1s both; }
+    .hero h1 span { font-style: italic; color: var(--white); }
+    .hero-amp { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,6vw,4rem); color: var(--gold-light); font-weight: 300; }
+    .hero-date { margin-top: 20px; font-family: 'Cormorant Garamond', serif; font-size: clamp(1.2rem,3vw,2rem); color: rgba(255,255,255,0.85); font-weight: 400; letter-spacing: 0.25em; text-transform: uppercase; animation: fadeDown 1.2s ease 0.2s both; }
+    .hero-divider { margin: 32px auto; width: 120px; height: 1px; background: linear-gradient(90deg, transparent, var(--gold-light), transparent); animation: fadeDown 1.3s ease 0.3s both; }
+    .hero-sub { font-size: 0.95rem; font-weight: 300; color: rgba(255,255,255,0.75); letter-spacing: 0.1em; animation: fadeDown 1.4s ease 0.4s both; }
+    .hero-scroll { margin-top: 60px; animation: float 2s ease-in-out infinite; color: rgba(255,255,255,0.5); font-size: 1.5rem; }
+    @keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+    @keyframes fadeDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* SECTIONS */
+    section { position: relative; z-index: 1; padding: 80px 20px; max-width: 900px; margin: 0 auto; }
+    section.alt-bg { max-width: 100%; background: linear-gradient(135deg, var(--prune-pale) 0%, var(--ivory-dark) 100%); }
+    section.alt-bg > .section-inner { max-width: 900px; margin: 0 auto; padding: 0 20px; }
+    .section-label { font-size: 0.7rem; font-weight: 600; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .section-title { font-family: 'Cormorant Garamond', serif; font-size: clamp(2rem,5vw,3.2rem); font-weight: 300; color: var(--prune-dark); line-height: 1.1; margin-bottom: 16px; }
+    .section-title em { font-style: italic; color: var(--prune); }
+    .section-desc { font-size: 0.95rem; line-height: 1.8; color: var(--text-mid); max-width: 600px; }
+    .section-divider { width: 80px; height: 1px; margin: 24px 0; background: linear-gradient(90deg, var(--gold), transparent); }
+
+    /* INFO CARDS */
+    .info-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 24px; margin-top: 40px; }
+    .info-card { background: var(--white); border: 1px solid var(--silver-light); border-radius: 12px; padding: 32px 28px; position: relative; overflow: hidden; transition: transform 0.3s, box-shadow 0.3s; }
+    .info-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(92,58,107,0.12); }
+    .info-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--prune), var(--gold)); }
+    .info-card-icon { font-size: 1.8rem; margin-bottom: 14px; }
+    .info-card-title { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--prune); margin-bottom: 8px; font-weight: 500; }
+    .info-card-time { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; color: var(--gold); text-transform: uppercase; margin-bottom: 10px; }
+    .info-card p { font-size: 0.9rem; line-height: 1.7; color: var(--text-mid); }
+    .info-card a { font-size: 0.82rem; color: var(--prune); text-decoration: none; display: inline-block; margin-top: 10px; border-bottom: 1px solid var(--prune-pale); transition: border-color 0.3s; }
+    .info-card a:hover { border-color: var(--prune); }
+
+    /* TIMELINE */
+    .timeline { position: relative; margin-top: 40px; padding-left: 40px; }
+    .timeline::before { content: ''; position: absolute; left: 14px; top: 0; bottom: 0; width: 1px; background: linear-gradient(180deg, var(--gold) 0%, var(--prune-light) 50%, var(--gold) 100%); }
+    .timeline-item { position: relative; margin-bottom: 32px; }
+    .timeline-dot { position: absolute; left: -33px; top: 4px; width: 12px; height: 12px; border-radius: 50%; background: var(--gold); border: 2px solid var(--ivory); box-shadow: 0 0 0 2px var(--gold); }
+    .timeline-time { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.15em; color: var(--gold); text-transform: uppercase; margin-bottom: 4px; }
+    .timeline-title { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--prune-dark); font-weight: 500; margin-bottom: 4px; }
+    .timeline-desc { font-size: 0.88rem; color: var(--text-light); line-height: 1.6; }
+
+    /* TRANSPORT */
+    .transport-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px,1fr)); gap: 20px; margin-top: 40px; }
+    .transport-card { background: var(--white); border-radius: 12px; padding: 28px 24px; border: 1px solid var(--silver-light); transition: transform 0.3s, box-shadow 0.3s; }
+    .transport-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(92,58,107,0.1); }
+    .transport-icon { font-size: 2rem; margin-bottom: 12px; }
+    .transport-title { font-family: 'Cormorant Garamond', serif; font-size: 1.2rem; color: var(--prune); margin-bottom: 10px; }
+    .transport-card p { font-size: 0.87rem; line-height: 1.7; color: var(--text-mid); }
+    .transport-card a { display: inline-block; margin-top: 12px; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; color: var(--prune); text-decoration: none; border-bottom: 1px solid var(--prune-pale); transition: border-color 0.3s; }
+    .transport-card a:hover { border-color: var(--prune); }
+
+    /* HOTELS */
+    .hotel-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px,1fr)); gap: 20px; margin-top: 40px; }
+    .hotel-card { background: var(--white); border-radius: 12px; padding: 28px 24px; border: 1px solid var(--silver-light); transition: transform 0.3s, box-shadow 0.3s; }
+    .hotel-card:hover { transform: translateY(-3px); box-shadow: 0 8px 30px rgba(92,58,107,0.1); }
+    .hotel-type { font-size: 0.68rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 8px; }
+    .hotel-name { font-family: 'Cormorant Garamond', serif; font-size: 1.3rem; color: var(--prune-dark); margin-bottom: 6px; }
+    .hotel-card p { font-size: 0.87rem; line-height: 1.6; color: var(--text-mid); }
+    .hotel-card a { display: inline-block; margin-top: 14px; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; padding: 8px 18px; border-radius: 20px; border: 1.5px solid var(--prune); color: var(--prune); text-decoration: none; transition: all 0.3s; }
+    .hotel-card a:hover { background: var(--prune); color: var(--white); }
+
+    /* DRESS CODE */
+    .dress-intro { background: var(--prune-pale); border-left: 3px solid var(--gold); border-radius: 0 8px 8px 0; padding: 20px 24px; margin: 24px 0 40px; }
+    .dress-intro p { font-size: 0.92rem; line-height: 1.8; color: var(--text-mid); }
+    .color-palette { display: flex; flex-wrap: wrap; gap: 12px; margin: 24px 0; }
+    .color-swatch { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .swatch-circle { width: 44px; height: 44px; border-radius: 50%; border: 2px solid var(--silver-light); box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+    .swatch-name { font-size: 0.65rem; text-align: center; color: var(--text-light); max-width: 60px; }
+    .reserved-note { background: var(--ivory-dark); border: 1px dashed var(--silver); border-radius: 8px; padding: 16px 20px; margin: 16px 0; font-size: 0.85rem; line-height: 1.7; color: var(--text-mid); }
+
+    /* CADEAUX */
+    .gift-box { text-align: center; padding: 50px 20px; }
+    .gift-icon { font-size: 3rem; margin-bottom: 20px; }
+    .gift-btn { display: inline-block; margin-top: 28px; padding: 14px 40px; border-radius: 30px; background: var(--prune); color: var(--white); text-decoration: none; font-family: 'Raleway', sans-serif; font-size: 0.82rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; transition: all 0.3s; box-shadow: 0 4px 20px rgba(92,58,107,0.3); }
+    .gift-btn:hover { background: var(--prune-dark); box-shadow: 0 6px 28px rgba(92,58,107,0.4); transform: translateY(-2px); }
+
+    /* RSVP */
+    .rsvp-form { background: var(--white); border-radius: 16px; padding: 40px; border: 1px solid var(--silver-light); box-shadow: 0 4px 30px rgba(92,58,107,0.06); margin-top: 40px; }
+    .form-row { margin-bottom: 22px; }
+    .form-row label { display: block; font-size: 0.78rem; font-weight: 600; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-mid); margin-bottom: 8px; }
+    .form-row input, .form-row select, .form-row textarea { width: 100%; font-family: 'Raleway', sans-serif; font-size: 0.92rem; padding: 12px 16px; border: 1.5px solid var(--silver-light); border-radius: 8px; background: var(--ivory); color: var(--text-dark); outline: none; transition: border-color 0.3s; }
+    .form-row input:focus, .form-row select:focus, .form-row textarea:focus { border-color: var(--prune); }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    @media (max-width: 600px) { .form-grid { grid-template-columns: 1fr; } }
+    .form-radio-group { display: flex; gap: 16px; flex-wrap: wrap; }
+    .form-radio { display: flex; align-items: center; gap: 8px; cursor: pointer; font-size: 0.9rem; color: var(--text-mid); }
+    .form-radio input[type="radio"] { accent-color: var(--prune); }
+    .form-submit { display: block; width: 100%; margin-top: 10px; padding: 16px; background: linear-gradient(135deg, var(--prune) 0%, var(--prune-light) 100%); color: var(--white); font-family: 'Raleway', sans-serif; font-size: 0.85rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase; border: none; border-radius: 8px; cursor: pointer; transition: all 0.3s; box-shadow: 0 4px 20px rgba(92,58,107,0.25); }
+    .form-submit:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(92,58,107,0.35); }
+    .form-note { font-size: 0.78rem; color: var(--text-light); margin-top: 14px; line-height: 1.6; text-align: center; }
+    .rsvp-success { display: none; text-align: center; padding: 40px 20px; }
+    .rsvp-success .success-icon { font-size: 3rem; margin-bottom: 16px; }
+    .rsvp-success h3 { font-family: 'Cormorant Garamond', serif; font-size: 1.8rem; color: var(--prune); }
+
+    /* PHOTOS */
+    .photo-box { text-align: center; padding: 40px 20px; background: var(--white); border-radius: 16px; border: 1px solid var(--silver-light); margin-top: 40px; }
+    .photo-icon { font-size: 2.5rem; margin-bottom: 16px; }
+    .photo-notice { display: inline-flex; align-items: flex-start; gap: 12px; background: #FFF8E8; border: 1px solid var(--gold-light); border-radius: 8px; padding: 14px 18px; margin: 20px 0; font-size: 0.85rem; line-height: 1.7; color: #6B5000; text-align: left; max-width: 560px; }
+    .photo-btn { display: inline-block; margin-top: 20px; padding: 12px 32px; border-radius: 30px; border: 2px solid var(--prune); color: var(--prune); text-decoration: none; font-size: 0.8rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; transition: all 0.3s; }
+    .photo-btn:hover { background: var(--prune); color: var(--white); }
+
+    /* FAQ */
+    .faq-list { margin-top: 36px; }
+    .faq-item { border-bottom: 1px solid var(--silver-light); overflow: hidden; }
+    .faq-question { width: 100%; text-align: left; padding: 20px 0; display: flex; justify-content: space-between; align-items: center; background: none; border: none; cursor: pointer; font-family: 'Cormorant Garamond', serif; font-size: 1.15rem; color: var(--prune-dark); font-weight: 500; }
+    .faq-question .faq-chevron { font-size: 0.9rem; color: var(--gold); transition: transform 0.3s; flex-shrink: 0; }
+    .faq-item.open .faq-chevron { transform: rotate(180deg); }
+    .faq-answer { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.3s; font-size: 0.9rem; line-height: 1.8; color: var(--text-mid); }
+    .faq-item.open .faq-answer { max-height: 500px; padding-bottom: 20px; }
+
+    /* FOOTER */
+    footer { background: var(--prune-dark); color: rgba(255,255,255,0.6); text-align: center; padding: 50px 20px; }
+    footer h3 { font-family: 'Cormorant Garamond', serif; font-size: 2.2rem; font-weight: 300; color: var(--white); margin-bottom: 8px; }
+    footer p { font-size: 0.85rem; line-height: 1.8; }
+    footer a { color: var(--gold-light); text-decoration: none; }
+    footer a:hover { color: var(--gold); }
+    .footer-divider { width: 60px; height: 1px; margin: 20px auto; background: var(--gold); }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) { nav a { padding: 12px 10px; font-size: 0.62rem; } .rsvp-form { padding: 24px 20px; } .section-title { font-size: 2rem; } }
+
+    /* LANGUE */
+    [data-lang="en"] { display: none; }
+    body.lang-en [data-lang="fr"] { display: none; }
+    body.lang-en [data-lang="en"] { display: block; }
+    .inline-en { display: none; }
+    body.lang-en .inline-en { display: inline; }
+    body.lang-en .inline-fr { display: none; }
+  </style>
+</head>
+<body>
+
+<div class="snow-container" id="snow"></div>
+
+<div class="lang-bar">
+  <button class="lang-btn active" onclick="setLang('fr')" id="btn-fr">FR</button>
+  <button class="lang-btn" onclick="setLang('en')" id="btn-en">EN</button>
+</div>
+
+<nav>
+  <a href="#infos"><span data-lang="fr">Infos</span><span data-lang="en">Info</span></a>
+  <a href="#programme"><span data-lang="fr">Programme</span><span data-lang="en">Schedule</span></a>
+  <a href="#venir"><span data-lang="fr">Venir</span><span data-lang="en">Getting Here</span></a>
+  <a href="#hebergement"><span data-lang="fr">Hébergement</span><span data-lang="en">Stay</span></a>
+  <a href="#dresscode"><span data-lang="fr">Dress Code</span><span data-lang="en">Dress Code</span></a>
+  <a href="#cadeaux"><span data-lang="fr">Cadeaux</span><span data-lang="en">Gifts</span></a>
+  <a href="#rsvp">RSVP</a>
+  <a href="#faq">FAQ</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero" id="top">
+  <div class="hero-snowflakes"></div>
+  <div class="hero-ornament">❄ ❅ ❆</div>
+  <h1>
+    <span>Emeline</span>
+    <span class="hero-amp"> &amp; </span>
+    <span>Valentin</span>
+  </h1>
+  <div class="hero-date">21 · 12 · 26</div>
+  <div class="hero-divider"></div>
+  <p class="hero-sub">
+    <span data-lang="fr">Ille-sur-Têt &nbsp;·&nbsp; Rivesaltes</span>
+    <span data-lang="en">Ille-sur-Têt &nbsp;·&nbsp; Rivesaltes &nbsp;·&nbsp; South of France</span>
+  </p>
+  <div class="hero-scroll">↓</div>
+</div>
+
+<!-- INFOS CLÉS -->
+<section id="infos">
+  <div class="section-label"><span data-lang="fr">Informations Essentielles</span><span data-lang="en">Key Information</span></div>
+  <h2 class="section-title"><span data-lang="fr">Le Grand <em>Jour</em></span><span data-lang="en">The Big <em>Day</em></span></h2>
+  <div class="section-divider"></div>
+  <p class="section-desc">
+    <span data-lang="fr">Lundi 21 décembre 2026 — le premier jour de l'hiver, pour une célébration qui restera gravée dans vos mémoires.</span>
+    <span data-lang="en">Monday, December 21st 2026 — the first day of winter, for a celebration you will never forget.</span>
+  </p>
+  <div class="info-grid">
+    <div class="info-card">
+      <div class="info-card-icon">🏛️</div>
+      <div class="info-card-time">15h45</div>
+      <div class="info-card-title"><span data-lang="fr">Mairie</span><span data-lang="en">Town Hall</span></div>
+      <p>107 bis Av. Pasteur<br>66130 Ille-sur-Têt</p>
+      <a href="https://maps.google.com/?q=107+bis+Avenue+Pasteur+Ille-sur-Tet" target="_blank"><span data-lang="fr">Voir sur la carte →</span><span data-lang="en">View on map →</span></a>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon">⛪</div>
+      <div class="info-card-time">16h30</div>
+      <div class="info-card-title"><span data-lang="fr">Église</span><span data-lang="en">Church</span></div>
+      <p>1 Rue de l'Église<br>66130 Ille-sur-Têt</p>
+      <a href="https://maps.google.com/?q=1+Rue+de+l'Eglise+Ille-sur-Tet" target="_blank"><span data-lang="fr">Voir sur la carte →</span><span data-lang="en">View on map →</span></a>
+    </div>
+    <div class="info-card">
+      <div class="info-card-icon">🥂</div>
+      <div class="info-card-time"><span data-lang="fr">Soirée</span><span data-lang="en">Evening</span></div>
+      <div class="info-card-title"><span data-lang="fr">Réception</span><span data-lang="en">Reception</span></div>
+      <p>2 Av. de la Salanque<br>66600 Rivesaltes</p>
+      <a href="https://maps.google.com/?q=2+Avenue+de+la+Salanque+Rivesaltes" target="_blank"><span data-lang="fr">Voir sur la carte →</span><span data-lang="en">View on map →</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- PROGRAMME -->
+<section id="programme" class="alt-bg">
+  <div class="section-inner">
+    <div class="section-label"><span data-lang="fr">Déroulé de la journée</span><span data-lang="en">Day Schedule</span></div>
+    <h2 class="section-title"><span data-lang="fr">Le <em>Programme</em></span><span data-lang="en">The <em>Schedule</em></span></h2>
+    <div class="section-divider"></div>
+    <div class="timeline">
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-time">15h45</div>
+        <div class="timeline-title"><span data-lang="fr">Cérémonie Civile</span><span data-lang="en">Civil Ceremony</span></div>
+        <div class="timeline-desc"><span data-lang="fr">Mairie d'Ille-sur-Têt — 107 bis Av. Pasteur</span><span data-lang="en">Town Hall of Ille-sur-Têt — 107 bis Av. Pasteur</span></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-time">16h30</div>
+        <div class="timeline-title"><span data-lang="fr">Cérémonie Religieuse</span><span data-lang="en">Religious Ceremony</span></div>
+        <div class="timeline-desc"><span data-lang="fr">Église d'Ille-sur-Têt — 1 Rue de l'Église</span><span data-lang="en">Church of Ille-sur-Têt — 1 Rue de l'Église</span></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-time">18h00</div>
+        <div class="timeline-title"><span data-lang="fr">Vin d'Honneur</span><span data-lang="en">Welcome Drinks</span></div>
+        <div class="timeline-desc"><span data-lang="fr">Domaine — 2 Av. de la Salanque, Rivesaltes</span><span data-lang="en">Venue — 2 Av. de la Salanque, Rivesaltes</span></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-time">~20h00</div>
+        <div class="timeline-title"><span data-lang="fr">Premier Dîner des Jeunes Mariés</span><span data-lang="en">First Dinner as Newlyweds</span></div>
+        <div class="timeline-desc"><span data-lang="fr">Dîner assis au domaine</span><span data-lang="en">Seated dinner at the venue</span></div>
+      </div>
+      <div class="timeline-item">
+        <div class="timeline-dot"></div>
+        <div class="timeline-time">~22h00</div>
+        <div class="timeline-title"><span data-lang="fr">Soirée</span><span data-lang="en">Evening Party</span></div>
+        <div class="timeline-desc">
+          <span data-lang="fr">DJ set et festivités jusqu'à 5h du matin — les derniers invités sont priés de quitter le domaine avant sa fermeture à 6h ✨</span>
+          <span data-lang="en">DJ set and festivities until 5am — guests are kindly asked to leave the venue before closing time at 6am ✨</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VENIR -->
+<section id="venir">
+  <div class="section-label"><span data-lang="fr">Comment nous rejoindre</span><span data-lang="en">Getting Here</span></div>
+  <h2 class="section-title"><span data-lang="fr">Venir à <em>Ille-sur-Têt</em></span><span data-lang="en">Travelling to <em>Ille-sur-Têt</em></span></h2>
+  <div class="section-divider"></div>
+  <div class="transport-grid">
+    <div class="transport-card">
+      <div class="transport-icon">✈️</div>
+      <div class="transport-title"><span data-lang="fr">En Avion</span><span data-lang="en">By Plane</span></div>
+      <p>
+        <span data-lang="fr">L'aéroport le plus proche est <strong>Perpignan-Rivesaltes (PGF)</strong>, à environ 30 min. L'aéroport de <strong>Barcelone (BCN)</strong> est à ~2h.</span>
+        <span data-lang="en">The closest airport is <strong>Perpignan-Rivesaltes (PGF)</strong>, approx. 30 min away. <strong>Barcelona Airport (BCN)</strong> is about 2 hours away.</span>
+      </p>
+      <a href="https://www.aeroport-perpignan.com" target="_blank"><span data-lang="fr">Aéroport de Perpignan →</span><span data-lang="en">Perpignan Airport →</span></a>
+    </div>
+    <div class="transport-card">
+      <div class="transport-icon">🚆</div>
+      <div class="transport-title"><span data-lang="fr">En Train</span><span data-lang="en">By Train</span></div>
+      <p>
+        <span data-lang="fr">Gare TGV de <strong>Perpignan</strong> (Paris-Perpignan : ~5h en TGV). Puis bus ou taxi jusqu'à Ille-sur-Têt (~30 min).</span>
+        <span data-lang="en"><strong>Perpignan</strong> TGV station (Paris to Perpignan: ~5h by TGV). Then bus or taxi to Ille-sur-Têt (~30 min).</span>
+      </p>
+      <a href="https://www.sncf-connect.com" target="_blank"><span data-lang="fr">Réserver sur SNCF →</span><span data-lang="en">Book on SNCF →</span></a>
+    </div>
+    <div class="transport-card">
+      <div class="transport-icon">🚗</div>
+      <div class="transport-title"><span data-lang="fr">En Voiture</span><span data-lang="en">By Car</span></div>
+      <p>
+        <span data-lang="fr">Via l'<strong>A9</strong>, sortie Perpignan Nord, puis D117 direction Ille-sur-Têt. Un parking est disponible sur place pour la réception à Rivesaltes.</span>
+        <span data-lang="en">Via the <strong>A9 motorway</strong>, exit Perpignan Nord, then D117 towards Ille-sur-Têt. Parking is available at the reception venue in Rivesaltes.</span>
+      </p>
+      <a href="https://maps.google.com/?q=Ille-sur-Tet+66130" target="_blank"><span data-lang="fr">Itinéraire Google Maps →</span><span data-lang="en">Google Maps directions →</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- HÉBERGEMENT -->
+<section id="hebergement" class="alt-bg">
+  <div class="section-inner">
+    <div class="section-label"><span data-lang="fr">Où dormir</span><span data-lang="en">Where to Stay</span></div>
+    <h2 class="section-title"><span data-lang="fr"><em>Hébergements</em> recommandés</span><span data-lang="en">Recommended <em>Accommodation</em></span></h2>
+    <div class="section-divider"></div>
+    <p class="section-desc">
+      <span data-lang="fr">Voici quelques adresses sélectionnées pour vous aider à organiser votre séjour. Pensez à réserver rapidement, les disponibilités se font rares en décembre !</span>
+      <span data-lang="en">Here are a few hand-picked options to help you plan your stay. Book early — availability is limited in December!</span>
+    </p>
+    <div class="hotel-grid">
+      <div class="hotel-card">
+        <div class="hotel-type"><span data-lang="fr">Hôtel · Perpignan</span><span data-lang="en">Hotel · Perpignan</span></div>
+        <div class="hotel-name"><span data-lang="fr">À compléter</span><span data-lang="en">To be added</span></div>
+        <p><span data-lang="fr">Remplacez cet encart par le nom, l'adresse et le tarif de votre hébergement préféré.</span><span data-lang="en">Replace this card with your recommended hotel name, address and rate.</span></p>
+        <a href="#" target="_blank"><span data-lang="fr">Réserver →</span><span data-lang="en">Book →</span></a>
+      </div>
+      <div class="hotel-card">
+        <div class="hotel-type"><span data-lang="fr">Hôtel · Ille-sur-Têt</span><span data-lang="en">Hotel · Ille-sur-Têt</span></div>
+        <div class="hotel-name"><span data-lang="fr">À compléter</span><span data-lang="en">To be added</span></div>
+        <p><span data-lang="fr">Remplacez cet encart par le nom, l'adresse et le tarif de votre hébergement préféré.</span><span data-lang="en">Replace this card with your recommended hotel name, address and rate.</span></p>
+        <a href="#" target="_blank"><span data-lang="fr">Réserver →</span><span data-lang="en">Book →</span></a>
+      </div>
+      <div class="hotel-card">
+        <div class="hotel-type"><span data-lang="fr">Camping / Gîte · Région</span><span data-lang="en">Campsite / Gîte · Area</span></div>
+        <div class="hotel-name"><span data-lang="fr">À compléter</span><span data-lang="en">To be added</span></div>
+        <p><span data-lang="fr">Idéal pour les familles ou les groupes. Remplacez par vos adresses sélectionnées.</span><span data-lang="en">Great for families or groups. Replace with your selected addresses.</span></p>
+        <a href="#" target="_blank"><span data-lang="fr">Réserver →</span><span data-lang="en">Book →</span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DRESS CODE -->
+<section id="dresscode">
+  <div class="section-label"><span data-lang="fr">Tenue & Style</span><span data-lang="en">Attire & Style</span></div>
+  <h2 class="section-title"><span data-lang="fr"><em>Élégance</em> à la Française</span><span data-lang="en">French <em>Elegance</em></span></h2>
+  <div class="section-divider"></div>
+  <div class="dress-intro">
+    <p>
+      <span data-lang="fr">Pour une harmonie douce et élégante, nous vous proposons quelques idées de couleurs.</span>
+      <span data-lang="en">For a soft and elegant harmony, we have put together some colour ideas for you.</span>
+    </p>
+  </div>
+  <p class="section-desc">
+    <span data-lang="fr"><strong>Palette de couleurs suggérée pour les invités :</strong></span>
+    <span data-lang="en"><strong>Suggested colour palette for guests:</strong></span>
+  </p>
+  <div class="color-palette">
+    <div class="color-swatch"><div class="swatch-circle" style="background:#B8967E;"></div><span class="swatch-name">Taupe</span></div>
+    <div class="color-swatch"><div class="swatch-circle" style="background:#E8A898;"></div><span class="swatch-name">Blush</span></div>
+    <div class="color-swatch"><div class="swatch-circle" style="background:#9B98C8;"></div><span class="swatch-name">Lavande</span></div>
+    <div class="color-swatch"><div class="swatch-circle" style="background:#C8943A;"></div><span class="swatch-name">Doré</span></div>
+    <div class="color-swatch"><div class="swatch-circle" style="background:#8E9E78;"></div><span class="swatch-name">Sauge</span></div>
+    <div class="color-swatch"><div class="swatch-circle" style="background:#C86848;"></div><span class="swatch-name">Terracotta</span></div>
+    <div class="color-swatch"><div class="swatch-circle" style="background:#4E7880;"></div><span class="swatch-name">Canard</span></div>
+    <div class="color-swatch"><div class="swatch-circle" style="background:#1A5040;"></div><span class="swatch-name">Sapin</span></div>
+    <div class="color-swatch"><div class="swatch-circle" style="background:#6B3820;"></div><span class="swatch-name">Chocolat</span></div>
+    <div class="color-swatch"><div class="swatch-circle" style="background:#1A2870;"></div><span class="swatch-name">Marine</span></div>
+  </div>
+  <div class="reserved-note">
+    ⚠️ <span data-lang="fr">Les couleurs prune, gris, blanc et toutes couleurs pouvant se confondre avec ces dernières sont réservées aux mariés, parents des mariés et le cortège d'honneur merci. 🙏<br><br>
+    👟 Pour l'harmonie des photos, nous vous remercions de privilégier des chaussures habillées jusqu'à la fin de la séance photo. Les baskets pourront rejoindre la piste de danse ensuite !</span>
+    <span data-lang="en">The colours plum, grey, white and any shades that could be confused with these are reserved for the bride, groom, parents of the couple and the wedding party. Thank you 🙏<br><br>
+    👟 For the harmony of the photos, we kindly ask you to wear dressy shoes until the end of the photo session. Trainers are more than welcome on the dance floor afterwards!</span>
+  </div>
+
+  <div style="margin-top:40px;">
+    <p class="section-desc" style="margin-bottom:24px;">
+      <span data-lang="fr">Quelques inspirations pour vous aider à trouver la tenue parfaite :</span>
+      <span data-lang="en">Some inspiration to help you find the perfect outfit:</span>
+    </p>
+    <!-- PINTEREST EMBED
+         1. Créez votre tableau Pinterest
+         2. Tableau → "..." → "Intégrer" → copiez le code iframe
+         3. Remplacez le bloc div ci-dessous par votre code iframe Pinterest -->
+    <div style="background:var(--ivory-dark); border:1px dashed var(--silver); border-radius:12px; padding:40px 24px; text-align:center;">
+      <div style="font-size:2rem; margin-bottom:12px;">📌</div>
+      <p style="font-family:'Cormorant Garamond',serif; font-size:1.2rem; color:var(--prune); margin-bottom:8px;">
+        <span data-lang="fr">Tableau d'inspirations Pinterest</span>
+        <span data-lang="en">Pinterest Inspiration Board</span>
+      </p>
+      <p style="font-size:0.82rem; color:var(--text-light);">
+        <span data-lang="fr">Remplacez cet encart par le code d'intégration de votre tableau Pinterest</span>
+        <span data-lang="en">Replace this block with your Pinterest board embed code</span>
+      </p>
+    </div>
+  </div>
+  <p style="font-size:0.82rem; color:var(--text-light); margin-top:20px; font-style:italic;">
+    <span data-lang="fr">💡 Conseil : prévoyez une tenue chaude pour les cérémonies et les photos en extérieur, les températures varient entre 6°C et 13°C.</span>
+    <span data-lang="en">💡 Tip: bring a warm layer for outdoor ceremonies and photos — temperatures in the area range from 6°C to 13°C.</span>
+  </p>
+</section>
+
+<!-- CADEAUX -->
+<section id="cadeaux" class="alt-bg">
+  <div class="section-inner">
+    <div class="gift-box">
+      <div class="gift-icon">🎁</div>
+      <div class="section-label" style="text-align:center;"><span data-lang="fr">Liste de mariage</span><span data-lang="en">Wedding Registry</span></div>
+      <h2 class="section-title" style="text-align:center;"><span data-lang="fr">Votre <em>Générosité</em></span><span data-lang="en">Your <em>Generosity</em></span></h2>
+      <div class="section-divider" style="margin:20px auto;"></div>
+      <p class="section-desc" style="margin:0 auto; text-align:center;">
+        <span data-lang="fr">Votre présence est le plus beau des cadeaux. Si vous souhaitez toutefois nous gâter, voici notre liste de mariage :</span>
+        <span data-lang="en">Your presence is the greatest gift of all. Should you wish to spoil us, here is our wedding registry:</span>
+      </p>
+      <a href="#" class="gift-btn" target="_blank">
+        <span data-lang="fr">Voir notre liste de cadeaux →</span>
+        <span data-lang="en">View our wedding registry →</span>
+      </a>
+      <p style="font-size:0.8rem; color:var(--text-light); margin-top:16px;">
+        <span data-lang="fr">(Le lien sera mis à jour prochainement)</span>
+        <span data-lang="en">(Link coming soon)</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- RSVP -->
+<section id="rsvp">
+  <div class="section-label">RSVP</div>
+  <h2 class="section-title"><span data-lang="fr">Confirmez votre <em>Présence</em></span><span data-lang="en">Confirm your <em>Attendance</em></span></h2>
+  <div class="section-divider"></div>
+  <p class="section-desc">
+    <span data-lang="fr">Merci de nous confirmer votre présence <strong>avant le 21 septembre 2026</strong> à l'adresse <a href="mailto:emelinec.valentinf@gmail.com" style="color:var(--prune);">emelinec.valentinf@gmail.com</a> ou via le formulaire ci-dessous.</span>
+    <span data-lang="en">Please confirm your attendance <strong>by September 21st, 2026</strong> at <a href="mailto:emelinec.valentinf@gmail.com" style="color:var(--prune);">emelinec.valentinf@gmail.com</a> or via the form below.</span>
+  </p>
+  <div class="rsvp-form" id="rsvp-form">
+    <div class="form-grid">
+      <div class="form-row">
+        <label><span data-lang="fr">Prénom *</span><span data-lang="en">First name *</span></label>
+        <input type="text" id="f-firstname" placeholder="Emeline" />
+      </div>
+      <div class="form-row">
+        <label><span data-lang="fr">Nom *</span><span data-lang="en">Last name *</span></label>
+        <input type="text" id="f-lastname" placeholder="Dupont" />
+      </div>
+    </div>
+    <div class="form-row">
+      <label>Email *</label>
+      <input type="email" id="f-email" placeholder="votre@email.com" />
+    </div>
+    <div class="form-row">
+      <label><span data-lang="fr">Serez-vous présent(e) ? *</span><span data-lang="en">Will you attend? *</span></label>
+      <div class="form-radio-group">
+        <label class="form-radio">
+          <input type="radio" name="presence" value="yes" />
+          <span data-lang="fr">🎉 Oui, avec joie !</span><span data-lang="en">🎉 Yes, with pleasure!</span>
+        </label>
+        <label class="form-radio">
+          <input type="radio" name="presence" value="no" />
+          <span data-lang="fr">😢 Non, je ne pourrai pas venir</span><span data-lang="en">😢 No, unfortunately</span>
+        </label>
+      </div>
+    </div>
+    <div class="form-row">
+      <label><span data-lang="fr">Nombre de personnes (vous inclus) *</span><span data-lang="en">Number of guests (including you) *</span></label>
+      <select id="f-guests">
+        <option value="1">1</option>
+        <option value="2" selected>2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5+</option>
+      </select>
+    </div>
+    <div class="form-row">
+      <label><span data-lang="fr">Allergies alimentaires ou régimes particuliers ?</span><span data-lang="en">Any food allergies or dietary requirements?</span></label>
+      <textarea id="f-diet" rows="3" placeholder="Végétarien, sans gluten, sans porc, allergie aux fruits à coque..."></textarea>
+      <p style="font-size:0.75rem; color:var(--text-light); margin-top:6px;">
+        <span data-lang="fr">Précisez uniquement les allergies, intolérances ou convictions alimentaires (ex. végétarien, casher, halal, sans gluten, allergie). Merci 🙏</span>
+        <span data-lang="en">Please mention only allergies, intolerances or dietary convictions (e.g. vegetarian, kosher, halal, gluten-free, nut allergy). Thank you 🙏</span>
+      </p>
+    </div>
+    <div class="form-row">
+      <label><span data-lang="fr">Un mot pour les mariés ? 💌</span><span data-lang="en">A message for the newlyweds? 💌</span></label>
+      <textarea id="f-message" rows="3" placeholder="..."></textarea>
+    </div>
+    <button class="form-submit" onclick="submitRSVP()">
+      <span data-lang="fr">Envoyer ma réponse</span><span data-lang="en">Send my reply</span>
+    </button>
+    <p class="form-note">
+      <span data-lang="fr">* Champs obligatoires. Vos données sont utilisées uniquement pour organiser le mariage.</span>
+      <span data-lang="en">* Required fields. Your data is used solely for wedding planning purposes.</span>
+    </p>
+  </div>
+  <div class="rsvp-success" id="rsvp-success">
+    <div class="success-icon">💌</div>
+    <h3 data-lang="fr">Merci !</h3>
+    <h3 data-lang="en">Thank you!</h3>
+    <p style="margin-top:12px; color:var(--text-mid);">
+      <span data-lang="fr">Votre réponse a bien été prise en compte. On a hâte de vous retrouver ! 🥂</span>
+      <span data-lang="en">Your response has been recorded. We can't wait to celebrate with you! 🥂</span>
+    </p>
+  </div>
+</section>
+
+<!-- PHOTOS -->
+<section id="photos" class="alt-bg">
+  <div class="section-inner">
+    <div class="section-label"><span data-lang="fr">Souvenirs</span><span data-lang="en">Memories</span></div>
+    <h2 class="section-title"><span data-lang="fr">Partagez vos <em>Photos</em></span><span data-lang="en">Share your <em>Photos</em></span></h2>
+    <div class="section-divider"></div>
+    <div class="photo-box">
+      <div class="photo-icon">📸</div>
+      <p class="section-desc" style="margin:0 auto; text-align:center;">
+        <span data-lang="fr">Après la cérémonie, partagez vos plus belles photos dans notre album commun !</span>
+        <span data-lang="en">After the ceremony, share your best photos in our shared album!</span>
+      </p>
+      <div style="display:flex; justify-content:center; margin:20px 0;">
+        <div class="photo-notice">
+          📵 <span data-lang="fr"><strong>Téléphones interdits</strong> lors de la sortie de la mairie et de l'église. Nos photographes professionnels sont là pour capturer ces instants magiques — laissez-leur la place pour vous offrir les plus belles images 🙏</span>
+          <span data-lang="en"><strong>No phones please</strong> at the exit of the town hall and church. Our professional photographers are there to capture these magical moments — please let them work their magic for you 🙏</span>
+        </div>
+      </div>
+      <a href="#" class="photo-btn" target="_blank">
+        <span data-lang="fr">Accéder à l'album partagé →</span>
+        <span data-lang="en">Access shared album →</span>
+      </a>
+      <p style="font-size:0.78rem; color:var(--text-light); margin-top:12px;">
+        <span data-lang="fr">(Lien disponible après le mariage)</span>
+        <span data-lang="en">(Link available after the wedding)</span>
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section id="faq">
+  <div class="section-label">FAQ</div>
+  <h2 class="section-title"><span data-lang="fr">Questions <em>Fréquentes</em></span><span data-lang="en">Frequently Asked <em>Questions</em></span></h2>
+  <div class="section-divider"></div>
+  <div class="faq-list">
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span data-lang="fr">Y a-t-il un parking sur place ?</span><span data-lang="en">Is there parking on site?</span>
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        <span data-lang="fr">Oui, un parking est disponible au domaine de Rivesaltes. Pour l'église et la mairie à Ille-sur-Têt, des places de stationnement sont disponibles dans les rues alentour.</span>
+        <span data-lang="en">Yes, parking is available at the Rivesaltes venue. For the church and town hall in Ille-sur-Têt, street parking is available nearby.</span>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span data-lang="fr">Que prévoir pour les enfants ?</span><span data-lang="en">What about children?</span>
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        <span data-lang="fr">Les enfants auront leur propre menu enfant adapté, ainsi que des animations spécialement prévues pour eux — la soirée sera aussi la leur ! Merci de nous indiquer leur âge dans votre RSVP afin que nous puissions tout organiser au mieux.</span>
+        <span data-lang="en">Children will have their own dedicated kids' menu, plus activities specially planned for them — the party is for them too! Please mention their age in your RSVP so we can organise everything perfectly.</span>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span data-lang="fr">Je viens avec un bébé — que prévoir ?</span><span data-lang="en">I'm coming with a baby — what should I know?</span>
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        <span data-lang="fr">Bienvenue aux petits bouts ! Nous n'avons pas de chaises hautes ni de lits parapluie sur place, mais il sera tout à fait possible d'installer jusqu'à 2 lits parapluie au fond de la salle, du côté du vestiaire, si vous souhaitez continuer la soirée pendant que bébé dort. Pensez à apporter de quoi bien le couvrir pour qu'il soit au chaud toute la nuit. 🍼</span>
+        <span data-lang="en">Little ones are most welcome! We don't have highchairs or travel cots on site, but we can accommodate up to 2 travel cots at the back of the room, near the cloakroom area, if you'd like to continue the evening while baby sleeps. Please bring enough blankets and layers to keep them warm through the night. 🍼</span>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span data-lang="fr">Jusqu'à quelle heure dure la soirée ?</span><span data-lang="en">How late does the evening go?</span>
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        <span data-lang="fr">La soirée se termine à 5h du matin. Le domaine ferme ses portes à 6h — les derniers invités sont donc priés de quitter les lieux avant cette heure.</span>
+        <span data-lang="en">The evening goes until 5am. The venue closes at 6am — guests are kindly asked to leave before then.</span>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span data-lang="fr">Puis-je utiliser mon téléphone pendant la cérémonie ?</span><span data-lang="en">Can I use my phone during the ceremony?</span>
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        <span data-lang="fr">Nous vous demandons de garder vos téléphones rangés lors des sorties de la mairie et de l'église. Des photographes professionnels seront présents pour immortaliser ces instants — votre rôle est de vivre ce moment pleinement 💛</span>
+        <span data-lang="en">We kindly ask you to keep your phones away during the exits from the town hall and church. Professional photographers will be there to capture everything — your role is simply to enjoy the moment 💛</span>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span data-lang="fr">Y a-t-il un covoiturage organisé ?</span><span data-lang="en">Is there a shuttle or carpooling?</span>
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        <span data-lang="fr">Nous n'avons pas prévu de navette officielle, mais si vous souhaitez vous organiser en covoiturage, nous avons créé un groupe WhatsApp pour vous mettre en contact.
+        <br><a href="https://chat.whatsapp.com/FLw5MJBTj6IJdfuOKhEOxs?mode=gi_t" target="_blank" style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:8px 16px;background:#25D366;color:#fff;border-radius:20px;font-size:0.8rem;font-weight:600;text-decoration:none;">💬 Rejoindre le groupe WhatsApp covoiturage</a></span>
+        <span data-lang="en">No official shuttle is planned, but if you'd like to organise carpooling, we have set up a WhatsApp group to connect you.
+        <br><a href="https://chat.whatsapp.com/FLw5MJBTj6IJdfuOKhEOxs?mode=gi_t" target="_blank" style="display:inline-flex;align-items:center;gap:6px;margin-top:10px;padding:8px 16px;background:#25D366;color:#fff;border-radius:20px;font-size:0.8rem;font-weight:600;text-decoration:none;">💬 Join the carpooling WhatsApp group</a></span>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span data-lang="fr">Y a-t-il un vestiaire ?</span><span data-lang="en">Is there a cloakroom?</span>
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        <span data-lang="fr">Oui ! Un vestiaire sera à votre disposition pour déposer manteaux et sacs en toute sécurité, afin que vous puissiez bouger et danser en toute liberté tout au long de la soirée.</span>
+        <span data-lang="en">Yes! A cloakroom will be available for you to leave coats and bags safely, so you can move and dance freely throughout the evening.</span>
+      </div>
+    </div>
+
+    <div class="faq-item">
+      <button class="faq-question" onclick="toggleFaq(this)">
+        <span data-lang="fr">Puis-je venir avec mon animal de compagnie ?</span><span data-lang="en">Can I bring my pet?</span>
+        <span class="faq-chevron">▼</span>
+      </button>
+      <div class="faq-answer">
+        <span data-lang="fr">On comprend tout à fait l'attachement que vous avez pour votre compagnon à quatre pattes — et c'est pour ça qu'on vous encourage à le laisser dans son environnement familier ce soir-là. Entre le bruit, la foule, les enfants et une longue nuit dans un lieu inconnu, la soirée pourrait être bien plus stressante pour lui que pour vous ! Il sera bien plus heureux dans son coin douillet, et vous profiterez de la fête l'esprit léger. 🐾</span>
+        <span data-lang="en">We completely understand the bond you have with your furry companion — and that's exactly why we'd encourage you to leave them in their familiar surroundings that evening. Between the noise, the crowd, the children and a long night in an unfamiliar place, the party could be far more stressful for them than for you! They'll be much happier in their cosy spot at home, and you'll be able to enjoy the evening with a carefree heart. 🐾</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <h3>Emeline & Valentin</h3>
+  <div class="footer-divider"></div>
+  <p><span data-lang="fr">21 décembre 2026 · Ille-sur-Têt & Rivesaltes, France</span><span data-lang="en">December 21st 2026 · Ille-sur-Têt & Rivesaltes, France</span></p>
+  <p style="margin-top:10px;"><a href="mailto:emelinec.valentinf@gmail.com">emelinec.valentinf@gmail.com</a></p>
+  <p style="margin-top:24px; font-size:0.75rem; opacity:0.4;">❄ ❅ ❆</p>
+</footer>
+
+<script>
+  /* SNOWFLAKES */
+  const snowContainer = document.getElementById('snow');
+  const flakes = ['❄','❅','❆','✦','·'];
+  for (let i = 0; i < 40; i++) {
+    const s = document.createElement('div');
+    s.classList.add('snowflake');
+    s.textContent = flakes[Math.floor(Math.random() * flakes.length)];
+    s.style.left = Math.random() * 100 + 'vw';
+    s.style.fontSize = (0.6 + Math.random() * 1.2) + 'em';
+    s.style.animationDuration = (6 + Math.random() * 14) + 's';
+    s.style.animationDelay = (Math.random() * 12) + 's';
+    s.style.opacity = 0.3 + Math.random() * 0.5;
+    snowContainer.appendChild(s);
+  }
+
+  /* LANGUAGE */
+  function setLang(lang) {
+    document.body.classList.toggle('lang-en', lang === 'en');
+    document.getElementById('btn-fr').classList.toggle('active', lang === 'fr');
+    document.getElementById('btn-en').classList.toggle('active', lang === 'en');
+    localStorage.setItem('wedding-lang', lang);
+  }
+  if (localStorage.getItem('wedding-lang') === 'en') setLang('en');
+
+  /* FAQ */
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if (!isOpen) item.classList.add('open');
+  }
+
+  /* RSVP */
+  function submitRSVP() {
+    const first = document.getElementById('f-firstname').value.trim();
+    const last  = document.getElementById('f-lastname').value.trim();
+    const email = document.getElementById('f-email').value.trim();
+    const pres  = document.querySelector('input[name="presence"]:checked');
+    if (!first || !last || !email || !pres) {
+      alert(document.body.classList.contains('lang-en')
+        ? 'Please fill in all required fields.'
+        : 'Merci de remplir tous les champs obligatoires.');
+      return;
+    }
+    const diet   = document.getElementById('f-diet').value.trim();
+    const msg    = document.getElementById('f-message').value.trim();
+    const guests = document.getElementById('f-guests').value;
+    const presence = pres.value === 'yes'
+      ? (document.body.classList.contains('lang-en') ? 'YES ✓' : 'OUI ✓')
+      : (document.body.classList.contains('lang-en') ? 'NO ✗'  : 'NON ✗');
+    const body = encodeURIComponent(
+      `Prénom / First name: ${first}\nNom / Last name: ${last}\nEmail: ${email}\nPrésence / Attendance: ${presence}\nNombre / Guests: ${guests}\nRégime / Dietary: ${diet || '-'}\nMessage: ${msg || '-'}`
+    );
+    const subject = encodeURIComponent(`RSVP Mariage E&V — ${first} ${last}`);
+    window.location.href = `mailto:emelinec.valentinf@gmail.com?subject=${subject}&body=${body}`;
+    document.getElementById('rsvp-form').style.display = 'none';
+    document.getElementById('rsvp-success').style.display = 'block';
+  }
+
+  /* SMOOTH REVEAL */
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.info-card, .transport-card, .hotel-card, .timeline-item').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(20px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
+</body>
+</html>
