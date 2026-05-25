@@ -9,7 +9,7 @@
     :root {
       --prune: #5C3A6B;
       --prune-light: #7B5494;
-      --prune-dark: #3D2249;
+      --prune-dark: #3D2249
       --prune-pale: #EDE5F2;
       --ivory: #FAF7F2;
       --ivory-dark: #F0EAE0;
@@ -814,16 +814,44 @@
     const diet   = document.getElementById('f-diet').value.trim();
     const msg    = document.getElementById('f-message').value.trim();
     const guests = document.getElementById('f-guests').value;
-    const presence = pres.value === 'yes'
-      ? (document.body.classList.contains('lang-en') ? 'YES ✓' : 'OUI ✓')
-      : (document.body.classList.contains('lang-en') ? 'NO ✗'  : 'NON ✗');
-    const body = encodeURIComponent(
-      `Prénom / First name: ${first}\nNom / Last name: ${last}\nEmail: ${email}\nPrésence / Attendance: ${presence}\nNombre / Guests: ${guests}\nRégime / Dietary: ${diet || '-'}\nMessage: ${msg || '-'}`
-    );
-    const subject = encodeURIComponent(`RSVP Mariage E&V — ${first} ${last}`);
-    window.location.href = `mailto:emelinec.valentinf@gmail.com?subject=${subject}&body=${body}`;
-    document.getElementById('rsvp-form').style.display = 'none';
-    document.getElementById('rsvp-success').style.display = 'block';
+    const presence = pres.value;
+
+  const btn = document.querySelector('.form-submit');
+  btn.disabled = true;
+  btn.textContent = document.body.classList.contains('lang-en') ? 'Sending…' : 'Envoi en cours…';
+
+  fetch('https://formspree.io/f/mwvzngvy', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({
+      prenom: first,
+      nom: last,
+      email: email,
+      presence: presence,
+      nombre_invites: guests,
+      regime_alimentaire: diet || '-',
+      message: msg || '-'
+    })
+  })
+  .then(function(response) {
+    if (response.ok) {
+      document.getElementById('rsvp-form').style.display = 'none';
+      document.getElementById('rsvp-success').style.display = 'block';
+    } else {
+      btn.disabled = false;
+      btn.textContent = document.body.classList.contains('lang-en') ? 'Send' : 'Envoyer';
+      alert(document.body.classList.contains('lang-en')
+        ? 'An error occurred. Please try again.'
+        : 'Une erreur est survenue. Merci de réessayer.');
+    }
+  })
+  .catch(function() {
+    btn.disabled = false;
+    btn.textContent = document.body.classList.contains('lang-en') ? 'Send' : 'Envoyer';
+    alert(document.body.classList.contains('lang-en')
+      ? 'An error occurred. Please try again.'
+      : 'Une erreur est survenue. Merci de réessayer.');
+  });
   }
 
   /* SMOOTH REVEAL */
